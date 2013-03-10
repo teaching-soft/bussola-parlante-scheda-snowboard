@@ -1,0 +1,5 @@
+# Per trasferire i files
+git push origin master
+
+# Per aggiungere un repository remoto
+git remote add origin <server>
