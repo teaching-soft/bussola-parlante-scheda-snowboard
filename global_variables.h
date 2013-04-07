@@ -6,6 +6,9 @@
  
 #ifndef _GLOBAL_VARIABLES_H_
 #define _GLOBAL_VARIABLES_H_
+
+// For use pwrite and pread 
+#define _XOPEN_SOURCE 500
  
 #ifndef bool
 #define bool unsigned char

@@ -1,16 +1,15 @@
 # Makefile
 
 # Compiler info
-CC = arm-linux-gnueabi-gcc
+CC = ../gcc-linaro-arm-linux-gnueabihf-4.7-2013.03-20130313_linux/bin/arm-linux-gnueabihf-gcc
 # Linker info
-LD = arm-linux-gnueabi-gcc
+LD = ../gcc-linaro-arm-linux-gnueabihf-4.7-2013.03-20130313_linux/bin/arm-linux-gnueabihf-gcc
 # Path info
-OBJPATH = ARMv7
-TARGET = $(OBJPATH)/compass.arm
+OBJPATH = test
+TARGET = $(OBJPATH)/gpio_test.arm
 # Files info
-SRC = main.c checks.c elaborate_compass_degrees.c global_variables.c buttons.c speech.c gpio_management.c
-OBJ = $(OBJPATH)/main.o $(OBJPATH)/checks.o $(OBJPATH)/elaborate_compass_degrees.o \
-	$(OBJPATH)/global_variables.o $(OBJPATH)/buttons.o $(OBJPATH)/speech.o  $(OBJPATH)/gpio_management.o
+SRC = main_gpio_test.c gpio_management.c
+OBJ = $(OBJPATH)/main_gpio_test.o $(OBJPATH)/gpio_management.o
 
 
 # Compiler options (all warnings, cpu type)

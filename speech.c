@@ -10,7 +10,7 @@
 #include "speech.h"
 #include "checks.h"
 #include "global_variables.h"
-
+// espeak flite festivall
 #define SPEECH_PROGRAM	"/usr/bin/espeak"
 void call_speech_engine(char *text_to_speech);
 
@@ -46,6 +46,16 @@ void say_out_route(void)
 	call_speech_engine(buffer);
 	
 	// speech!!
+}
+// ------------------------------------------------------
+void say_rolling(void)
+{
+	
+}
+// ------------------------------------------------------
+void say_pitching(void)
+{
+	
 }
 // ------------------------------------------------------
 void call_speech_engine(char *text_to_speech)

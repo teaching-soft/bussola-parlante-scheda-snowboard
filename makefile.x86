@@ -3,25 +3,23 @@
 # Compiler info
 CC = gcc
 # Linker info
-LINKER = gcc
+LD = gcc
 # Path info
 OBJPATH = x86
 TARGET = $(OBJPATH)/compass.x86
 # Files info
-SRC = main.c checks.c elaborate_compass_degrees.c global_variables.c buttons.c speech.c
-OBJ = $(OBJPATH)/main.o $(OBJPATH)/checks.o $(OBJPATH)/elaborate_compass_degrees.o $(OBJPATH)/global_variables.o $(OBJPATH)/buttons.o $(OBJPATH)/speech.o
+SRC = main.c checks.c elaborate_compass_degrees.c global_variables.c buttons.c speech.c gpio_management.c
+OBJ = $(OBJPATH)/main.o $(OBJPATH)/checks.o $(OBJPATH)/elaborate_compass_degrees.o \
+	$(OBJPATH)/global_variables.o $(OBJPATH)/buttons.o $(OBJPATH)/speech.o $(OBJPATH)/gpio_management.o
 
 
 # Compiler options (all warnings)
 CCOPT = -Wall 
-
-# Linker options (use math library) //-ldl -L/usr/arm-linux-gnueabi/lib \
-LINKEROPT = -lm  
-
+LDFLAGS = -lm
 
 # Targets
 $(TARGET):	$(OBJ)
-	$(LINKER) $(OBJ) -o $(TARGET) $(LINKEROPT)
+	$(LD)  $(LDFLAGS) $(OBJ) -o $(TARGET) 
 
 # Se ha bisogno di un file con estensione .o in ARMv7 (ARMv7/main.o) 
 # prende il corrispondente file con estensione c (main.c) nella directory corrente
@@ -31,5 +29,5 @@ $(OBJPATH)/%.o: %.c
 
 	
 clean:	
-	rm $(OBJPATH)/*.o $(TARGET)
+	rm $(OBJ) $(TARGET)
 

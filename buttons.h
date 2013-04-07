@@ -10,6 +10,9 @@
 #define NOT_BUTTONS_PRESSED	0	
 #define TELL_ME_DIRECTION		1
 #define SET_DIRECTION				2
+#define TELL_ME_ROOLLING		3
+#define TELL_ME_PITCHING		4
+#define DO_SOMETHING				5
  
 int read_buttons(void);
  

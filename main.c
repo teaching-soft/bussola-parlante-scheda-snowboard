@@ -19,6 +19,8 @@ int main (void)
 		// - Capture user input 
 		operator_choise = read_buttons();
 		if(operator_choise == TELL_ME_DIRECTION) say_direction() ; 
+		if(operator_choise == TELL_ME_ROOLLING) say_rolling() ; 
+		if(operator_choise == TELL_ME_PITCHING) say_pitching() ; 
 		if(operator_choise == SET_DIRECTION) 
 		{
 				// Checks if should set or remove route status
