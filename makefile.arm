@@ -1,33 +1,34 @@
 # Makefile
 
 # Compiler info
-CC = arm-linux-gnueabi-gcc
+CC = ../gcc-linaro-arm-linux-gnueabihf-4.7-2013.03-20130313_linux/bin/arm-linux-gnueabihf-gcc
 # Linker info
-LD = arm-linux-gnueabi-gcc
+LD = ../gcc-linaro-arm-linux-gnueabihf-4.7-2013.03-20130313_linux/bin/arm-linux-gnueabihf-gcc
 # Path info
 OBJPATH = ARMv7
 TARGET = $(OBJPATH)/compass.arm
 # Files info
-SRC = main.c checks.c elaborate_compass_degrees.c global_variables.c buttons.c speech.c gpio_management.c
-OBJ = $(OBJPATH)/main.o $(OBJPATH)/checks.o $(OBJPATH)/elaborate_compass_degrees.o \
+SRC = main.c check_route.c elaborate_compass_degrees.c global_variables.c buttons.c speech.c gpio_management.c rs232.c
+OBJ = $(OBJPATH)/main.o $(OBJPATH)/check_route.o $(OBJPATH)/elaborate_compass_degrees.o $(OBJPATH)/rs232.o \
 	$(OBJPATH)/global_variables.o $(OBJPATH)/buttons.o $(OBJPATH)/speech.o  $(OBJPATH)/gpio_management.o
 
 
+
 # Compiler options (all warnings, cpu type)
-CCOPT = -Wall -mcpu=cortex-a8 
-LDFLAGS = -mcpu=cortex-a8 -lm
+CCOPT = -Wall -mcpu=cortex-a8
+LDFLAGS = -mcpu=cortex-a8 -lm -lrt
 
 # Targets
 $(TARGET):	$(OBJ)
-	$(LD) $(LDFLAGS) $(OBJ) -o $(TARGET) 
+	$(LD) $(LDFLAGS) $(OBJ) -o $(TARGET)
 
-# Se ha bisogno di un file con estensione .o in ARMv7 (ARMv7/main.o) 
+# Se ha bisogno di un file con estensione .o in ARMv7 (ARMv7/main.o)
 # prende il corrispondente file con estensione c (main.c) nella directory corrente
-# ed esegue il comando corrispondente 	$(CC) $(CCOPT) -c main.c -o ARMv7/main.o) 
+# ed esegue il comando corrispondente 	$(CC) $(CCOPT) -c main.c -o ARMv7/main.o)
 $(OBJPATH)/%.o: %.c
 	$(CC) $(CCOPT) -c $< -o $@
 
-	
-clean:	
+
+clean:
 	rm $(OBJ) $(TARGET)
 
