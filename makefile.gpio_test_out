@@ -6,10 +6,10 @@ CC = ../gcc-linaro-arm-linux-gnueabihf-4.7-2013.03-20130313_linux/bin/arm-linux-
 LD = ../gcc-linaro-arm-linux-gnueabihf-4.7-2013.03-20130313_linux/bin/arm-linux-gnueabihf-gcc
 # Path info
 OBJPATH = test
-TARGET = $(OBJPATH)/gpio_test.arm
+TARGET = $(OBJPATH)/gpio_test_out.arm
 # Files info
-SRC = main_gpio_test.c gpio_management.c
-OBJ = $(OBJPATH)/main_gpio_test.o $(OBJPATH)/gpio_management.o
+SRC = main_gpio_test_out.c gpio_management.c
+OBJ = $(OBJPATH)/main_gpio_test_out.o $(OBJPATH)/gpio_management.o
 
 
 # Compiler options (all warnings, cpu type)
@@ -19,11 +19,6 @@ LDFLAGS = -mcpu=cortex-a8 -lm
 # Targets
 $(TARGET):	$(OBJ)
 	$(LD) $(LDFLAGS) $(OBJ) -o $(TARGET) 
-	$(CC) $(CCOPT) -c main_gpio_test_out.c -o $(OBJPATH)/main_gpio_test_out.o
-gpio_test_out:	main_gpio_test_out.c gpio_management.c
-	
-	$(LD) $(LDFLAGS) $(OBJPATH)/main_gpio_test_out.o $(OBJPATH)/gpio_management.o -o $(OBJPATH)/gpio_test_out 
-
 	
 # Se ha bisogno di un file con estensione .o in ARMv7 (ARMv7/main.o) 
 # prende il corrispondente file con estensione c (main.c) nella directory corrente

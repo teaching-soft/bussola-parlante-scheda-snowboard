@@ -28,7 +28,7 @@ int main (int argn, char* argv[])
 	// Check for command line options
 	command_line_parser(argn,argv);
 
-	say_something("Bi Bi compass avviata");
+	say_something("BI Bi compass avviata");
 
 	// Start
 	while(1)
@@ -47,20 +47,20 @@ int main (int argn, char* argv[])
 		if(operator_choise == SET_DIRECTION)
 		{
 				// Checks if should set or remove route status
-				if(DESTINATION_ROUTE == -1)
+				if(PREVIOUS_ROUTE == -1)
 				{
-					DESTINATION_ROUTE = PRESENT_ROUTE;
+					PREVIOUS_ROUTE = PRESENT_ROUTE;
 					say_set_direction() ;puts("SET_DIRECTION");
 				}
 				else
 				{
-					DESTINATION_ROUTE = -1;
+					PREVIOUS_ROUTE = -1;
 					say_unset_direction();puts("UN SET_DIRECTION");
 				}
 		}
 		// ==============================
 		// Checks if the route is set-up
-		if(DESTINATION_ROUTE != -1)
+		if(PREVIOUS_ROUTE != -1)
 		{
 				// Check if the time control has gone
 				ret = out_route_time_control();
@@ -79,7 +79,7 @@ void command_line_parser(int argn, char* argv[])
 {
 	int opt;
 	strcpy(SERIAL_PORT,DEFAULT_SERIAL_PORT);
-	while ((opt = getopt(argn, argv, "adt:vh")) != -1)
+	while ((opt = getopt(argn, argv, "dt:vh")) != -1)
 	{
         switch (opt)
 		{
@@ -91,10 +91,6 @@ void command_line_parser(int argn, char* argv[])
 				printf("Device used:%s\n",optarg);
 				strcpy(SERIAL_PORT,optarg);
 				break;
-			case 'a':
-				printf("Average on\n");
-				AVERAGE = true;;
-				break;				
 			case 'v':
 				printf("Program version:%s\n",VERSION);
 				say_something("Usato opzione -v, esco");

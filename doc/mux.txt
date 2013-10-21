@@ -1,0 +1,14 @@
+Per configurare il mux
+{
+Bit 5: 1 - Input, 0 - Output
+
+Bit 4: 1 - Pull up, 0 - Pull down
+
+Bit 3: 1 - Pull disabled, 0 - Pull enabled
+
+Bit 2 \
+
+Bit 1 |- Mode
+
+Bit 0 /
+}

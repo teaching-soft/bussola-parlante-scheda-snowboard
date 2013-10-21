@@ -1,0 +1,12 @@
+/dev/ttyO2 connettore 9 pin presente -> UART3 
+
+
+
+
+Configurazione UART1
+{
+	Configurazione RX echo  0x0032 > /sys/kernel/debug/omap_mux/uart2_rx (110001 - 1=Input enabled,1=PullUp,0=Pull Enabled,010=mux1)
+	Configurazione TX echo  0x0002 > /sys/kernel/debug/omap_mux/uart2_tx (mux pin 010)
+}
+tail -f /dev/ttyO0 &
+echo a > /dev/ttyO0

@@ -23,16 +23,15 @@
 #endif
 
 
-#define OUT_ROUTE_LIMIT_DEGREES		5 // degrees
+#define OUT_ROUTE_LIMIT_DEGREES	5 // degrees
 
 extern int PRESENT_ROUTE;
-extern int DESTINATION_ROUTE;
+extern int PREVIOUS_ROUTE;
 extern int PITCHING;
 extern int ROLLING;
 extern bool I_CAN_WORK;
 extern char SERIAL_PORT[100];
 extern bool COMPASS_DEBUG;
-extern bool AVERAGE;
 extern const char VERSION[];
 
 #endif // _GLOBAL_VARIABLES_H_

@@ -19,9 +19,8 @@ LDFLAGS = -mcpu=cortex-a8 -lm
 # Targets
 $(TARGET):	$(OBJ)
 	$(LD) $(LDFLAGS) $(OBJ) -o $(TARGET) 
-	$(CC) $(CCOPT) -c main_gpio_test_out.c -o $(OBJPATH)/main_gpio_test_out.o
+
 gpio_test_out:	main_gpio_test_out.c gpio_management.c
-	
 	$(LD) $(LDFLAGS) $(OBJPATH)/main_gpio_test_out.o $(OBJPATH)/gpio_management.o -o $(OBJPATH)/gpio_test_out 
 
 	

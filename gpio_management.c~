@@ -62,7 +62,8 @@ bool set_mode_pin(char *what_pin, enum gpio_pin_mode mode)
 
 	if(mode == _GPIO_READ_MODE) strcpy(how,"in");
 	else strcpy(how,"out");
-
+puts(how);
+puts(full_path);
 	pwrite (handle,how,strlen(how),0);
 	close(handle);
 	return true;

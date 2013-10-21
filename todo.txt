@@ -1,5 +1,3 @@
-Quando si preme un pulsante la porta seriale riceve sei caratteri invece che 4, usato la porta usb
-ALCUNI PULSANTI RIMBALZANO, mettere una pausa
 
 
 Mettere la voce femminile a festival (c'è ma non funziona)

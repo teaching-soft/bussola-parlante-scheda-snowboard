@@ -24,18 +24,6 @@ static int festival_socket_open(const char *host, int port);
 // espeak flite festivall
 // espeak   -vit+m/f1 "Ciao come stai"
 /* echo "come stai" | festival --tts --pipe --language italian
-{
-	apt-get install festival-italian festival)
-	.festivalrc
-	(set! main-path "/usr/share/festival")
-	(set! libdir main-path)
-	(set! lexdir (path-append libdir "dicts"))
-	(set! voice_default 'voice_pc_diphone) <--maschile
-	(set! voice_default 'voice_lp_diphone) <--femminile
-
-	.festivalvarsrc
-	(set! main-path "/usr/share/festival")
-	(set! load-path (cons main-path load-path))
 */
 //#define SPEECH_PROGRAM	"/usr/bin/espeak"
 #define SPEECH_PROGRAM	"festival"
@@ -95,6 +83,7 @@ void say_pitching(void)
 void call_speech_engine(char *text_to_speech)
 {
 	char buffer[200];
+	// Open the socket only 1 time
 	static int socket = -1;
 	int n_byte_write;
 	if(socket == -1) socket = festival_socket_open(FESTIVAL_DEFAULT_SERVER_HOST, FESTIVAL_DEFAULT_SERVER_PORT);
@@ -115,30 +104,6 @@ void call_speech_engine(char *text_to_speech)
 	sprintf(buffer,"(SayText \"%s\")",text_to_speech);
 	n_byte_write = write(socket,buffer,strlen(buffer));
 	if (n_byte_write < 0)  if (n_byte_write < 0) puts("I can't send message to speak");
-	//--
-	//close(socket);
-	/* Changed for speeder program
-	//char buffer[100];
-	pid_t pid;
-	pid = fork();
-	// Child process
-	if(pid == 0)
-	{
-		//puts("Start child");
-		FILE *fp;
-		int status;
-		fp = popen("festival --tts --pipe --language italian", "w");
-		if (fp == NULL) puts("Some was wrong in call_speech_engine (popen) ");
-		fputs(text_to_speech,fp);
-
-		status = pclose(fp);
-		if (status == -1) puts("Some was wrong in call_speech_engine (pclose)");
-		//puts("End child");
-		exit(0);
-	}
-	// Check for the child and remove the zombies
-	waitpid(-1, NULL,WNOHANG);
-	*/
 }
 // ---------------------------------------------------------------------
 void say_something(char *what)
