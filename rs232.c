@@ -29,7 +29,7 @@
 #include <string.h>
 #include <errno.h>
 #include "rs232.h"
-
+ 
 
 int _rs232_set(int ttys_descriptor,unsigned int baud,unsigned int data_bits, unsigned int parity, unsigned int stop_bits);
 /* For error handling */
@@ -37,7 +37,10 @@ int _setrs232_baud(int ttys_descriptor,unsigned int baud);
 int _setrs232_databits(int ttys_descriptor,unsigned int data_bits);
 int _setrs232_parity(int ttys_descriptor,unsigned int parity);
 int _setrs232_stopbits(int ttys_descriptor,unsigned int stop_bits);
-int _setrs232_other(int ttys_descriptor);
+int _setrs232_other_c_i_flags(int ttys_descriptor);
+int _setrs232_other_c_o_flags(int ttys_descriptor);
+int _setrs232_other_c_c_flags(int ttys_descriptor);
+int _setrs232_other_c_l_flags(int ttys_descriptor);
 /*--------------------------------------------------------------------------------------------- */
 int rs232_open(const char *ttysPort,unsigned int baud, unsigned int data_bits, unsigned int parity, unsigned int stop_bits)
 {
@@ -59,6 +62,7 @@ int rs232_open(const char *ttysPort,unsigned int baud, unsigned int data_bits, u
 /*---------------------------------------------------------------------------------------------*/
 int _rs232_set(int ttys_descriptor, unsigned int baud, unsigned int data_bits, unsigned int parity, unsigned int stop_bits)
 {
+	/* Altrimenti provare con void cfmakeraw(struct termios *termios_p);*/
 	int ret;
 	ret = _setrs232_baud(ttys_descriptor,baud);
 	if(ret == -1)
@@ -91,10 +95,34 @@ int _rs232_set(int ttys_descriptor, unsigned int baud, unsigned int data_bits, u
 		exit(1);
 	}
 
-	ret = _setrs232_other(ttys_descriptor);
+	ret = _setrs232_other_c_i_flags(ttys_descriptor);
 	if(ret == -1)
 	{
-		perror("Other!");
+		perror("Other c_i flags!");
+		printf("ERRNO=%d\n",errno);
+		exit(1);
+	}
+
+	ret = _setrs232_other_c_o_flags(ttys_descriptor);
+	if(ret == -1)
+	{
+		perror("Other c_o flags!");
+		printf("ERRNO=%d\n",errno);
+		exit(1);
+	}
+
+	ret = _setrs232_other_c_c_flags(ttys_descriptor);
+	if(ret == -1)
+	{
+		perror("Other c_c flags!");
+		printf("ERRNO=%d\n",errno);
+		exit(1);
+	}
+
+	ret = _setrs232_other_c_l_flags(ttys_descriptor);
+	if(ret == -1)
+	{
+		perror("Other c_l flags!");
 		printf("ERRNO=%d\n",errno);
 		exit(1);
 	}
@@ -115,7 +143,7 @@ int _setrs232_baud(int ttys_descriptor,unsigned int baud)
 		exit(1);
 	}
 
-	/*  Imposta la velocità           */
+	/*  Imposta la velocità in input     */
 	ret = cfsetispeed(&options,baud);
 	if(ret == -1)
 	{
@@ -123,7 +151,7 @@ int _setrs232_baud(int ttys_descriptor,unsigned int baud)
 		printf("ERRNO=%d\n",errno);
 		exit(1);
 	}
-
+	/* ed in output */
 	ret = cfsetospeed(&options,baud);
 	if(ret == -1)
 	{
@@ -131,7 +159,7 @@ int _setrs232_baud(int ttys_descriptor,unsigned int baud)
 		printf("ERRNO=%d\n",errno);
 		exit(1);
 	}
-
+	// Applica i cambiamenti immediatamente
 	ret = tcsetattr(ttys_descriptor, TCSANOW, &options);
 
 	if(ret == -1)
@@ -205,26 +233,89 @@ int _setrs232_stopbits(int ttys_descriptor,unsigned int stop_bits)
 
 }
 /*--------------------------------------------------------------------------------------------- */
-int _setrs232_other(int ttys_descriptor)
+int _setrs232_other_c_i_flags(int ttys_descriptor)
+{
+	int ret;
+	struct termios options;
+	/* Recupera le informazioni        */
+	tcgetattr(ttys_descriptor, &options);
+	/* Ignora il segnale di break */
+	options.c_iflag |= IGNBRK;
+
+	/* Impedisce il cambio fra CR e NL in input e viceversa */
+	options.c_iflag &= ~(INLCR | ICRNL);
+
+	/* Disabilita il controllo XON/XOFF */
+	options.c_iflag &= ~(IXON | IXOFF);
+
+	ret = tcsetattr(ttys_descriptor, TCSANOW, &options);
+	return ret;
+}
+/*--------------------------------------------------------------------------------------------- */
+int _setrs232_other_c_o_flags(int ttys_descriptor)
 {
 	int ret;
 	struct termios options;
 	/* Recupera le informazioni        */
 	tcgetattr(ttys_descriptor, &options);
 
-	/* Imposta  altre opzioni        */
-	options.c_cflag |= (CLOCAL | CREAD);
-
-	/* Modalità raw, disabilita l'eco, abilita il segnale ISIG */
-	options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
-
-	/* Imposta il raw mode anche in uscita */
+	/* Impedisce il cambio fra CR e NL in output e viceversa */
+	options.c_iflag &= ~(ONLCR | OCRNL);
+	
+	/* Disabilita user-defined outprocessing in uscita */
 	options.c_oflag &= ~OPOST;
+	
+	/* Abilita l'invio del CR */
+	options.c_oflag &= ~ONLRET;
+	
 	/* Setta  le opzioni della porta */
 	ret = tcsetattr(ttys_descriptor, TCSANOW, &options);
 	return ret;
 }
 /*--------------------------------------------------------------------------------------------- */
+int _setrs232_other_c_c_flags(int ttys_descriptor)
+{
+	int ret;
+	struct termios options;
+	/* Recupera le informazioni        */
+	tcgetattr(ttys_descriptor, &options);
+
+	/* Abilita il ricevitore       */
+	options.c_cflag |= CREAD;
+	
+	/* Ignora le linee di controllo del modem     */
+	options.c_cflag |= CLOCAL;
+	/* Disabilita il controllo RTS/CTS */
+	options.c_cflag &= ~CRTSCTS;
+
+	ret = tcsetattr(ttys_descriptor, TCSANOW, &options);
+	return ret;
+}
+/*--------------------------------------------------------------------------------------------- */
+int _setrs232_other_c_l_flags(int ttys_descriptor)
+{
+	int ret;
+	struct termios options;
+	/* Recupera le informazioni        */
+	tcgetattr(ttys_descriptor, &options);
+
+	/* Disabilita la generazione del corrispondente signal alla ricezione di INTR, QUIT, SUSP, or DSUSP */
+	options.c_lflag &= ~ISIG;
+	/* Disabilita la modalità 'canonica' */
+	options.c_lflag &= ~ICANON;
+	
+	/* Modalità disabilita l'eco, carattere, linea e parola */
+	options.c_lflag &= ~(ECHO | ECHOE | ECHOK);
+
+	/* Setta  le opzioni della porta */
+	ret = tcsetattr(ttys_descriptor, TCSANOW, &options);
+	return ret;
+}
+/*--------------------------------------------------------------------------------------------- */
+
+
+
+
 int rs232_buffer_in_lenght(int ttys_descriptor)
 {
 	int ret;
