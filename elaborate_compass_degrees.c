@@ -69,7 +69,8 @@ bool read_compass_value(int* value)
 	int bytes_arrived = rs232_buffer_in_lenght(ttys_cmp10_descriptor);
 	if (bytes_arrived != ANSWER_LENGHT_FOR_CMP10_CMD)
 	{
-		printf("SERIAL ERROR: Bytes arrived:%d#",bytes_arrived);
+		printf("SERIAL ERROR: Bytes arrived:%d I was waiting for %d#",
+			bytes_arrived, ANSWER_LENGHT_FOR_CMP10_CMD);
 		for(i = 0;i < bytes_arrived;i++)
 		{
 			rs232_get(ttys_cmp10_descriptor,buffer, 1);
@@ -90,7 +91,7 @@ bool read_compass_value(int* value)
 	*value = (position_value / 10);
 	PITCHING = (signed char)buffer[2];
 	ROLLING = (signed char)buffer[3];
-	if(COMPASS_DEBUG == true) printf("#Data: %d %d %d %d \nROUTE %d, PITCHING %d, ROLLING %d#\n",
+	if(COMPASS_DEBUG == true) printf("#Data: %d, %d, %d, %d, ROUTE %d, PITCHING %d, ROLLING %d\n",
 		buffer[0],buffer[1],buffer[2],buffer[3],*value, PITCHING, ROLLING);
 	return true;
 }
@@ -122,7 +123,7 @@ int init_serial_port()
 {
 	int ttys_descriptor = rs232_open(SERIAL_PORT,B9600,CS8,PNONE,SB1);
 	// Test port descriptor
-	if(COMPASS_DEBUG == true) printf("Open port ");
+	//if(COMPASS_DEBUG == true) printf("Open port ");
 	if(ttys_descriptor == -1)
 	{
 		perror("SERIAL ERROR:Port not open!!!\nSerial port is:");
@@ -136,7 +137,7 @@ int write_cmd(int ttys_descriptor, unsigned char cmd)
 {
 	int ret;
 	ret = rs232_write(ttys_descriptor,&cmd,1);
-	if(COMPASS_DEBUG == true) puts("Send cmd");
+	//if(COMPASS_DEBUG == true) puts("Send cmd");
 	if(ret == -1)
 	{
 		perror("SERIAL ERROR:I can't write!!");
