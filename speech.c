@@ -58,6 +58,7 @@ void say_out_route(void)
 	int out_route;
 	out_route = how_many_out_route_degrees ();
 	sprintf(buffer,"Fuori rotta di %d gradi",out_route);
+	if(COMPASS_DEBUG == true) printf("Fuori rotta di %d gradi\n",out_route);
 	call_speech_engine(buffer);
 
 	// speech!!

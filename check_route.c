@@ -31,8 +31,10 @@ bool out_route_time_control()
 bool out_route_control()
 {
 	int out_route;
-
+	// Get the degrees
 	out_route = how_many_out_route_degrees();
+	// Check if negative
+	if(out_route < 0) out_route = out_route * -1;
 	if(out_route > OUT_ROUTE_LIMIT_DEGREES) return true;
 	return false;
 }
