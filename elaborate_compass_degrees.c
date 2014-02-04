@@ -34,6 +34,8 @@ void get_new_compass_value()
 	
 	if(is_value_present == true)
 	{
+		// If AVERAGE is true the program should use an array an 
+		// a calculate average value
 		if(AVERAGE == true)
 		{
 			insert_read_value_in_vector(new_value);
@@ -41,6 +43,7 @@ void get_new_compass_value()
 		}
 		else
 		{
+			// With AVERAGE egual false, no average is requested
 			PRESENT_ROUTE = new_value;
 			I_CAN_WORK = true;
 		}

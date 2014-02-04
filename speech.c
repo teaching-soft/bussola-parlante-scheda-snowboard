@@ -90,7 +90,7 @@ void call_speech_engine(char *text_to_speech)
 	if(socket == -1) socket = festival_socket_open(FESTIVAL_DEFAULT_SERVER_HOST, FESTIVAL_DEFAULT_SERVER_PORT);
 	if(socket == -1)
 	{
-		puts("Festival not found, try to start server: festival --server --language italian");
+		puts("Festival not found, I try to start server: festival --server --language italian");
 		system ("festival --server --language italian &");
 		sleep(2);
 		socket = festival_socket_open(FESTIVAL_DEFAULT_SERVER_HOST, FESTIVAL_DEFAULT_SERVER_PORT);

@@ -1,7 +1,7 @@
 /* main.c
  * author: 5 TIEN
  * date: 23/02/2013
- * description: main file of snowcompass project
+ * description: main file of talking compass project
 */
 
 #include <stdio.h>
@@ -27,20 +27,24 @@ int main (int argn, char* argv[])
 
 	// Check for command line options
 	command_line_parser(argn,argv);
-
+	
+	// First voice message
+	// Defined in speech.c
 	say_something("Bi Bi compass avviata");
 
 	// Start
 	while(1)
 	{
 		// ==============================
-		// Degrees jobs
+		// Get new compass value, defined in elaborate_compass_degree.c
 		get_new_compass_value();
 		// ==============================
-		// - Capture user input
+		// - Capture user input, defined in buttons.c
 		operator_choise = read_buttons();
-		// Wait for COMPASS_VALUES is full
+		// Wait for COMPASS_VALUES array is full for the first time
 		if(I_CAN_WORK == false) continue;
+		// ==============================
+		// Execute user request
 		if(operator_choise == TELL_ME_DIRECTION) {puts("TELL_ME_DIRECTION");say_direction();}
 		if(operator_choise == TELL_ME_ROOLLING) {puts("TELL_ME_ROOLLING");say_rolling();}
 		if(operator_choise == TELL_ME_PITCHING) {puts("TELL_ME_PITCHING");say_pitching();}
@@ -63,6 +67,7 @@ int main (int argn, char* argv[])
 		if(DESTINATION_ROUTE != -1)
 		{
 				// Check if the time control has gone
+				// Defined in check_route.c
 				ret = out_route_time_control();
 				if(ret == true)
 				{
