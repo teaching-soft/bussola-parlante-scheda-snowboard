@@ -4,6 +4,12 @@ git push origin master
 # Per aggiungere i nuovi files, sotto dir comprese, altrimenti .
 git add --all :/
 
+# Per fare il commit del lavoro svolto
+git commit -a -m "Cosa si è fatto"
+
+# Inserire un tag -a=annotated nome_tag -m=messaggio
+git tag -a v1.4 -m 'qualcosa sul tag'
+
 # Per aggiornare dal repository remoto a quello locale
 git pull (prima fare il commit)
 
