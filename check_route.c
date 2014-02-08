@@ -45,7 +45,7 @@ int how_many_out_route_degrees()
 	// Checks if present route and previous route are in 4 and 1 sector
 	if((PRESENT_ROUTE > 270) && (DESTINATION_ROUTE < 90))
 	{
-		degrees_to_0 = 90 - DESTINATION_ROUTE;
+		degrees_to_0 = DESTINATION_ROUTE;
 		degrees_to_360 = 360 - PRESENT_ROUTE;
 		out_route = degrees_to_0 + degrees_to_360;
 		// Route is negative 
@@ -54,7 +54,7 @@ int how_many_out_route_degrees()
 
 	if ((DESTINATION_ROUTE > 270) && (PRESENT_ROUTE < 90))
 	{
-		degrees_to_0 = 90 - PRESENT_ROUTE;
+		degrees_to_0 = PRESENT_ROUTE;
 		degrees_to_360 = 360 - DESTINATION_ROUTE;
 		out_route = degrees_to_0 + degrees_to_360;
 		return out_route;
