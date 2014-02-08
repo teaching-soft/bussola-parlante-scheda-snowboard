@@ -7,8 +7,8 @@ git add --all :/
 # Per fare il commit del lavoro svolto
 git commit -a -m "Cosa si è fatto"
 
-# Per trasferire i files 
-git push --tags
+# Per trasferire i files ed i tags
+git push origin master --tags
 
 # Mostra i tags
 git describe
