@@ -1,15 +1,26 @@
-/* main_speech_test.c
- * author: 5 TIEN
- * date: 23/02/2013
- * description: main file of snowcompass project
-*/
+/***************************************************************************
+	progetto			: "la bussola parlante" con scheda snowboard
+    file:				: main_speech_test.c
+    begin               : mer apr 21 10:34:57 CET 2011
+    copyright           : (C) 2011 by Giancarlo Martini
+    email               : gm@giancarlomartini.it
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #define SPEECH_PROGRAM	"festival"
-int main(int argn,char *argv[])
-{
+int main(int argn,char *argv[]) {
 
 	char buffer[100];
 	pid_t pid;
@@ -23,10 +34,9 @@ int main(int argn,char *argv[])
 	fputs(buffer,fp);
 
 	status = pclose(fp);
-	if (status == -1)
-	{
+	if (status == -1) {
 		puts("fclose error");/* Error reported by pclose() */
-    	}
+	}
 	puts("Fine");
 
 

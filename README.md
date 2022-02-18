@@ -1,4 +1,1 @@
-compass_speaking
-================
-
-Compass speaking
+Codice per la gestione della scheda snowboard come bussola

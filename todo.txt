@@ -1,6 +1,0 @@
-
-
-Mettere la voce femminile a festival (c'è ma non funziona)
-Implementare seconda uscita bluetooth
-
-

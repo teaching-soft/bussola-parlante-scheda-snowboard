@@ -1,11 +1,23 @@
-/* main_gpio_test.c
- * author: 5 TIEN
- * date: 23/02/2013
- * description: main file of snowcompass project
-*/
+/***************************************************************************
+	progetto			: "la bussola parlante" con scheda snowboard
+    file:				: main_gpio_test.c
+    begin               : mer apr 21 10:34:57 CET 2011
+    copyright           : (C) 2011 by Giancarlo Martini
+    email               : gm@giancarlomartini.it
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> 
+#include <unistd.h>
 #include "gpio_management.h"
 
 // Default Input
@@ -21,8 +33,7 @@
 #define	GPIO_159_SOMETHING_5							"159"	// Pin 18
 #define	GPIO_161_SOMETHING_6							"161"	// Pin 16
 
-int main(int argn,char *argv[])
-{
+int main(int argn,char *argv[]) {
 
 	set_mode_pin(GPIO_139_TELL_POSITION,_GPIO_READ_MODE);
 	set_mode_pin(GPIO_138_TELL_PICHING,_GPIO_READ_MODE);
@@ -32,18 +43,17 @@ int main(int argn,char *argv[])
 	set_mode_pin(GPIO_134_SOMETHING_2,_GPIO_READ_MODE);
 	set_mode_pin(GPIO_133_SOMETHING_3,_GPIO_READ_MODE);
 	set_mode_pin(GPIO_132_SOMETHING_4,_GPIO_READ_MODE);
-	
+
 	// Main loop
-	while(1)
-	{			
+	while(1) {
 		sleep(1);
 		printf("Pin 3 is:%d # Pin 5 is:%d # Pin 7 is:%d # Pin 9 is:%d # Pin 11 is:%d # "
-			"Pin 13 is:%d # Pin 15 is:%d # Pin 17 is:%d\n",
-			(int)get_pin_status(GPIO_139_TELL_POSITION), (int)get_pin_status(GPIO_138_TELL_PICHING),
-			(int)get_pin_status(GPIO_137_TELL_ROLLING),(int)get_pin_status(GPIO_136_SET_INIT_POS),
-			(int)get_pin_status(GPIO_135_SOMETHING_1),(int)get_pin_status(GPIO_134_SOMETHING_2),(int)get_pin_status(GPIO_133_SOMETHING_3),
-			(int)get_pin_status(GPIO_132_SOMETHING_4));
+			   "Pin 13 is:%d # Pin 15 is:%d # Pin 17 is:%d\n",
+			   (int)get_pin_status(GPIO_139_TELL_POSITION), (int)get_pin_status(GPIO_138_TELL_PICHING),
+			   (int)get_pin_status(GPIO_137_TELL_ROLLING),(int)get_pin_status(GPIO_136_SET_INIT_POS),
+			   (int)get_pin_status(GPIO_135_SOMETHING_1),(int)get_pin_status(GPIO_134_SOMETHING_2),(int)get_pin_status(GPIO_133_SOMETHING_3),
+			   (int)get_pin_status(GPIO_132_SOMETHING_4));
 	}
-	
+
 	return EXIT_SUCCESS;
 }

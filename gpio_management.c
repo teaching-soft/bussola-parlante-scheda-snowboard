@@ -1,8 +1,19 @@
-/* gpio_management.c
- * author: 5 TIEN
- * date: 23/02/2013
- * description: gpio management
- */
+/***************************************************************************
+	progetto			: "la bussola parlante" con scheda snowboard
+    file:				: gpio_management.c
+    begin               : mer apr 21 10:34:57 CET 2011
+    copyright           : (C) 2011 by Giancarlo Martini
+    email               : gm@giancarlomartini.it
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 
 #include "gpio_management.h"
 
@@ -24,8 +35,7 @@
 
 bool export_pin(char *what_pin);
 
-bool export_pin(char *what_pin)
-{
+bool export_pin(char *what_pin) {
 	int handle;
 	char full_path[MAX_FULL_PATH];
 	strcpy(full_path,MAIN_PATH);
@@ -34,8 +44,7 @@ bool export_pin(char *what_pin)
 	//puts(full_path);
 
 	handle = open(full_path, O_WRONLY);
-	if (handle < 0)
-	{
+	if (handle < 0) {
 		perror("Cannot open export file.\n");
 		return false;
 	}
@@ -45,8 +54,7 @@ bool export_pin(char *what_pin)
 	return true;
 }
 // --------------------------------------------------------------
-bool set_mode_pin(char *what_pin, enum gpio_pin_mode mode)
-{
+bool set_mode_pin(char *what_pin, enum gpio_pin_mode mode) {
 	int handle;
 	char full_path[MAX_FULL_PATH],how[5];
 
@@ -54,8 +62,7 @@ bool set_mode_pin(char *what_pin, enum gpio_pin_mode mode)
 
 	sprintf(full_path,"%sgpio%s/%s",MAIN_PATH,what_pin,PIN_DIRECTION_FILE);
 	handle = open(full_path, O_WRONLY);
-	if (handle < 0)
-	{
+	if (handle < 0) {
 		perror("Cannot open direction file.\n");
 		return false;
 	}
@@ -68,8 +75,7 @@ bool set_mode_pin(char *what_pin, enum gpio_pin_mode mode)
 	return true;
 }
 // --------------------------------------------------------------
-bool set_pin_status(char *what_pin, enum gpio_pin_set_status status)
-{
+bool set_pin_status(char *what_pin, enum gpio_pin_set_status status) {
 	int handle;
 	char full_path[MAX_FULL_PATH],how[5];
 	sprintf(full_path,"%sgpio%s/%s",MAIN_PATH,what_pin,PIN_VALUE_FILE);
@@ -77,8 +83,7 @@ bool set_pin_status(char *what_pin, enum gpio_pin_set_status status)
 	//puts(full_path);
 
 	handle = open(full_path, O_WRONLY);
-	if (handle < 0)
-	{
+	if (handle < 0) {
 		perror("Cannot open value file for write.\n");
 		return false;
 	}
@@ -91,8 +96,7 @@ bool set_pin_status(char *what_pin, enum gpio_pin_set_status status)
 	return true;
 }
 // --------------------------------------------------------------
-enum gpio_pin_read_status get_pin_status(char *what_pin)
-{
+enum gpio_pin_read_status get_pin_status(char *what_pin) {
 	int handle;
 	char full_path[MAX_FULL_PATH],buf[10];
 	sprintf(full_path,"%sgpio%s/%s",MAIN_PATH,what_pin,PIN_VALUE_FILE);
@@ -100,8 +104,7 @@ enum gpio_pin_read_status get_pin_status(char *what_pin)
 	//puts(full_path);
 
 	handle = open(full_path, O_RDONLY);
-	if (handle < 0)
-	{
+	if (handle < 0) {
 		perror("Cannot open file for read.\n");
 		return false;
 	}

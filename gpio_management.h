@@ -1,9 +1,20 @@
-/* gpio_management.h
- * author: 5 TIEN
- * date: 23/02/2013
- * description: gpio management
- */ 
- 
+/***************************************************************************
+	progetto			: "la bussola parlante" con scheda snowboard
+    file:				: gpio_management.h
+    begin               : mer apr 21 10:34:57 CET 2011
+    copyright           : (C) 2011 by Giancarlo Martini
+    email               : gm@giancarlomartini.it
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef _GPIO_MANAGEMENT_H_
 #define _GPIO_MANAGEMENT_H_
 #include "global_variables.h"

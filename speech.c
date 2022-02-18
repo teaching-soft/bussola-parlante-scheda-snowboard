@@ -1,8 +1,20 @@
-/* speech.c
- * author: 5 TIEN
- * date: 2/03/2013
- * description: speech functions
- */
+/***************************************************************************
+	progetto			: "la bussola parlante" con scheda snowboard
+    file:				: speech.c
+    begin               : mer apr 21 10:34:57 CET 2011
+    copyright           : (C) 2011 by Giancarlo Martini
+    email               : gm@giancarlomartini.it
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -29,8 +41,7 @@ static int festival_socket_open(const char *host, int port);
 #define SPEECH_PROGRAM	"festival"
 void call_speech_engine(char *text_to_speech);
 
-void say_direction (void)
-{
+void say_direction (void) {
 	char buffer [100];
 	sprintf(buffer,"Direzione %d gradi",PRESENT_ROUTE);
 	call_speech_engine(buffer);
@@ -38,22 +49,19 @@ void say_direction (void)
 
 }
 // -------------------------------------------------------
-void say_set_direction (void)
-{
+void say_set_direction (void) {
 	char buffer [100];
 	sprintf(buffer,"Rotta impostata a %d gradi",PRESENT_ROUTE);
 	call_speech_engine(buffer);
 	//puts(buffer);
 }
 // -------------------------------------------------------
-void say_unset_direction(void)
-{
+void say_unset_direction(void) {
 	call_speech_engine("Impostazione rotta rimossa");
 	//puts("Impostazione rotta rimossa");
 }
 // -------------------------------------------------------
-void say_out_route(void)
-{
+void say_out_route(void) {
 	char buffer [100];
 	int out_route;
 	out_route = how_many_out_route_degrees ();
@@ -64,16 +72,14 @@ void say_out_route(void)
 	// speech!!
 }
 // ------------------------------------------------------
-void say_rolling(void)
-{
+void say_rolling(void) {
 	char buffer [100];
 	sprintf(buffer,"Rollio %d gradi",ROLLING);
 	call_speech_engine(buffer);
 	//puts(buffer);
 }
 // ------------------------------------------------------
-void say_pitching(void)
-{
+void say_pitching(void) {
 	char buffer [100];
 	sprintf(buffer,"Beccheggio %d gradi",PITCHING);
 	call_speech_engine(buffer);
@@ -81,15 +87,13 @@ void say_pitching(void)
 
 }
 // ------------------------------------------------------
-void call_speech_engine(char *text_to_speech)
-{
+void call_speech_engine(char *text_to_speech) {
 	char buffer[200];
 	// Open the socket only 1 time
 	static int socket = -1;
 	int n_byte_write;
 	if(socket == -1) socket = festival_socket_open(FESTIVAL_DEFAULT_SERVER_HOST, FESTIVAL_DEFAULT_SERVER_PORT);
-	if(socket == -1)
-	{
+	if(socket == -1) {
 		puts("Festival not found, I try to start server: festival --server --language italian");
 		system ("festival --server --language italian &");
 		sleep(2);
@@ -107,47 +111,41 @@ void call_speech_engine(char *text_to_speech)
 	if (n_byte_write < 0)  if (n_byte_write < 0) puts("I can't send message to speak");
 }
 // ---------------------------------------------------------------------
-void say_something(char *what)
-{
+void say_something(char *what) {
 	call_speech_engine(what);
 }
 // ---------------------------------------------------------------------
-static int festival_socket_open(const char *host, int port)
-{
-    /* Return an FD to a remote server */
-    struct sockaddr_in serv_addr;
-    struct hostent *serverhost;
-    int fd;
+static int festival_socket_open(const char *host, int port) {
+	/* Return an FD to a remote server */
+	struct sockaddr_in serv_addr;
+	struct hostent *serverhost;
+	int fd;
 
-    fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+	fd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-    if (fd < 0)
-    {
+	if (fd < 0) {
 		fprintf(stderr,"festival_client: can't get socket\n");
 		return -1;
-    }
-    memset(&serv_addr, 0, sizeof(serv_addr));
-    if ((serv_addr.sin_addr.s_addr = inet_addr(host)) == -1)
-    {
+	}
+	memset(&serv_addr, 0, sizeof(serv_addr));
+	if ((serv_addr.sin_addr.s_addr = inet_addr(host)) == -1) {
 		/* its a name rather than an ipnum */
 		serverhost = gethostbyname(host);
-		if (serverhost == (struct hostent *)0)
-		{
+		if (serverhost == (struct hostent *)0) {
 			fprintf(stderr,"festival_client: gethostbyname failed\n");
 			return -1;
 		}
 		memmove(&serv_addr.sin_addr,serverhost->h_addr, serverhost->h_length);
-    }
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(port);
+	}
+	serv_addr.sin_family = AF_INET;
+	serv_addr.sin_port = htons(port);
 
-    if (connect(fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) != 0)
-    {
+	if (connect(fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) != 0) {
 		fprintf(stderr,"festival_client: connect to server failed\n");
 		return -1;
-    }
+	}
 
-    return fd;
+	return fd;
 }
 /*
  * 	if(pid == 0)

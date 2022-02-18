@@ -1,8 +1,20 @@
-/* elaborate_compass_degree.c
- * author: 5 TIEN
- * date: 23/02/2013
- * description: function to elaborate compass values
- */
+/***************************************************************************
+	progetto			: "la bussola parlante" con scheda snowboard
+    file:				: elaborate_compass_degree.c
+    begin               : mer apr 21 10:34:57 CET 2011
+    copyright           : (C) 2011 by Giancarlo Martini
+    email               : gm@giancarlomartini.it
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -26,23 +38,18 @@ bool read_compass_value(int* value);
 void insert_read_value_in_vector(int value);
 void do_new_average_value(void);
 
-void get_new_compass_value()
-{
+void get_new_compass_value() {
 	int new_value;
 	bool is_value_present;
 	is_value_present = read_compass_value(&new_value);
-	
-	if(is_value_present == true)
-	{
-		// If AVERAGE is true the program should use an array an 
+
+	if(is_value_present == true) {
+		// If AVERAGE is true the program should use an array an
 		// a calculate average value
-		if(AVERAGE == true)
-		{
+		if(AVERAGE == true) {
 			insert_read_value_in_vector(new_value);
 			if(I_CAN_WORK == true) do_new_average_value();
-		}
-		else
-		{
+		} else {
 			// With AVERAGE egual false, no average is requested
 			PRESENT_ROUTE = new_value;
 			I_CAN_WORK = true;
@@ -50,14 +57,12 @@ void get_new_compass_value()
 	}
 }
 // ---------------------------------
-bool read_compass_value(int* value)
-{
+bool read_compass_value(int* value) {
 	static int ttys_cmp10_descriptor;
 	static bool i_am_wait_for_reply = false;
 	unsigned char buffer[100];
 	unsigned int position_value,i;
-	if(i_am_wait_for_reply == false)
-	{
+	if(i_am_wait_for_reply == false) {
 		ttys_cmp10_descriptor = init_serial_port();
 		write_cmd(ttys_cmp10_descriptor,0x23);
 		i_am_wait_for_reply = true;
@@ -70,12 +75,10 @@ bool read_compass_value(int* value)
 	i_am_wait_for_reply = false;
 	// Check arrived data lenght
 	int bytes_arrived = rs232_buffer_in_lenght(ttys_cmp10_descriptor);
-	if (bytes_arrived != ANSWER_LENGHT_FOR_CMP10_CMD)
-	{
+	if (bytes_arrived != ANSWER_LENGHT_FOR_CMP10_CMD) {
 		printf("SERIAL ERROR: Bytes arrived:%d I was waiting for %d#",
-			bytes_arrived, ANSWER_LENGHT_FOR_CMP10_CMD);
-		for(i = 0;i < bytes_arrived;i++)
-		{
+			   bytes_arrived, ANSWER_LENGHT_FOR_CMP10_CMD);
+		for(i = 0; i < bytes_arrived; i++) {
 			rs232_get(ttys_cmp10_descriptor,buffer, 1);
 			printf("%d ",buffer[0]);
 		}
@@ -85,7 +88,7 @@ bool read_compass_value(int* value)
 	}
 	// Get data
 	rs232_get(ttys_cmp10_descriptor,buffer, ANSWER_LENGHT_FOR_CMP10_CMD);
-	
+
 	rs232_close(ttys_cmp10_descriptor);
 	// Move bytes as documentation
 	position_value = buffer[0];
@@ -95,18 +98,16 @@ bool read_compass_value(int* value)
 	PITCHING = (signed char)buffer[2];
 	ROLLING = (signed char)buffer[3];
 	if(COMPASS_DEBUG == true) printf("#Data: %d, %d, %d, %d, ROUTE %d, PITCHING %d, ROLLING %d\n",
-		buffer[0],buffer[1],buffer[2],buffer[3],*value, PITCHING, ROLLING);
+										 buffer[0],buffer[1],buffer[2],buffer[3],*value, PITCHING, ROLLING);
 	return true;
 }
 //-------------------------------------------------------------------------------
-bool get_elapsed_time(int should_reset)
-{
+bool get_elapsed_time(int should_reset) {
 	// tv_sec tv_nsec */
 	static struct timespec start;
 	struct timespec end;
 
-	if(should_reset == RESET_ELAPSED_TIMER)
-	{
+	if(should_reset == RESET_ELAPSED_TIMER) {
 		clock_gettime(CLOCK_MONOTONIC, &start);
 		return false;
 	}
@@ -122,13 +123,11 @@ bool get_elapsed_time(int should_reset)
 	return false;
 }
 //-------------------------------------------------------------------------------
-int init_serial_port()
-{
+int init_serial_port() {
 	int ttys_descriptor = rs232_open(SERIAL_PORT,B9600,CS8,PNONE,SB1);
 	// Test port descriptor
 	//if(COMPASS_DEBUG == true) printf("Open port ");
-	if(ttys_descriptor == -1)
-	{
+	if(ttys_descriptor == -1) {
 		perror("SERIAL ERROR:Port not open!!!\nSerial port is:");
 		printf("%s\n",SERIAL_PORT);
 		exit(-1);
@@ -136,39 +135,33 @@ int init_serial_port()
 	return ttys_descriptor;
 }
 // -------------------------------------
-int write_cmd(int ttys_descriptor, unsigned char cmd)
-{
+int write_cmd(int ttys_descriptor, unsigned char cmd) {
 	int ret;
 	ret = rs232_write(ttys_descriptor,&cmd,1);
 	//if(COMPASS_DEBUG == true) puts("Send cmd");
-	if(ret == -1)
-	{
+	if(ret == -1) {
 		perror("SERIAL ERROR:I can't write!!");
 		exit(-1);
 	}
 	return ret;
 }
 // ---------------------------------
-void insert_read_value_in_vector(int value)
-{
-     int static index = 0;
-     if(index == MAX_COMPASS_VALUES)
-	 {
-		 index = 0;
-		 I_CAN_WORK = true;
-	 }
-     COMPASS_VALUES[index] = value;
-     index++;
+void insert_read_value_in_vector(int value) {
+	int static index = 0;
+	if(index == MAX_COMPASS_VALUES) {
+		index = 0;
+		I_CAN_WORK = true;
+	}
+	COMPASS_VALUES[index] = value;
+	index++;
 }
 // --------------------------------
-void do_new_average_value(void)
-{
+void do_new_average_value(void) {
 	double sin_degree,cos_degree,sum_sin=0,sum_cos=0,average_sin,average_cos;
 	double to_rad = M_PI / 180;
 	int i;
 
-	for(i = 0;i < MAX_COMPASS_VALUES;i++)
-	{
+	for(i = 0; i < MAX_COMPASS_VALUES; i++) {
 		sin_degree = sin (COMPASS_VALUES[i] * to_rad);
 		cos_degree = cos (COMPASS_VALUES[i] * to_rad);
 		sum_sin = sum_sin + sin_degree;
@@ -179,9 +172,8 @@ void do_new_average_value(void)
 	PRESENT_ROUTE = (atan2 (average_sin,average_cos) * 180) / M_PI;
 	if(PRESENT_ROUTE < 0) PRESENT_ROUTE += 360;
 
-	if(COMPASS_DEBUG == true)
-	{
-		for(i = 0;i < MAX_COMPASS_VALUES;i++) printf("%d ",COMPASS_VALUES[i]);
+	if(COMPASS_DEBUG == true) {
+		for(i = 0; i < MAX_COMPASS_VALUES; i++) printf("%d ",COMPASS_VALUES[i]);
 		printf("# Av. sin:%f # Av. cos:%f # Dir:%d\n",average_sin, average_cos, PRESENT_ROUTE);
 	}
 }
